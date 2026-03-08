@@ -3,10 +3,7 @@ import { getVehiclesForSale } from '@/lib/vehicles_simple'
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('=== API marketplace ===')
     const vehicles = await getVehiclesForSale()
-    
-    console.log('Veículos à venda:', vehicles.length)
     
     return NextResponse.json({ vehicles })
   } catch (error) {

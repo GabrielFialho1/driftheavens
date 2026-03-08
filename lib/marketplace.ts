@@ -21,25 +21,16 @@ export async function createMarketplaceListing(
   images: string[]
 ): Promise<{ success: boolean; message: string }> {
   try {
-    console.log('=== createMarketplaceListing ===')
-    console.log('Params:', { vehicleId, sellerId, name, price })
-    
     // Primeiro, verificar se o veículo existe e pertence ao usuário
     const vehicleCheckResult = await query(
       'SELECT _id FROM vehicles WHERE _id = ? AND owner_id = ?',
       [vehicleId, sellerId]
     ) as any[]
 
-    console.log('Vehicle check result:', vehicleCheckResult)
-    console.log('Vehicle check result length:', vehicleCheckResult.length)
-
     // Verificação mais robusta
     if (!vehicleCheckResult || vehicleCheckResult.length === 0) {
-      console.log('❌ Veículo não encontrado ou não pertence ao usuário')
       return { success: false, message: 'Veículo não encontrado ou não pertence a você' }
     }
-
-    console.log('✅ PASSOU DA VERIFICAÇÃO! Veículo encontrado e pertence ao usuário!')
 
     // Verificar se já não está à venda
     const existingListing = await query(
@@ -59,10 +50,7 @@ export async function createMarketplaceListing(
       [vehicleId, sellerId, name, price, description, imagesJson]
     ) as any
 
-    console.log('Insert result:', result)
-
     if (result.affectedRows > 0) {
-      console.log('Anúncio criado com sucesso!')
       return { success: true, message: 'Veículo colocado à venda com sucesso!' }
     } else {
       return { success: false, message: 'Erro ao criar anúncio' }

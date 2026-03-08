@@ -2,12 +2,9 @@ import { query } from './database'
 
 export async function getUserVehicles(userId: number): Promise<any[]> {
   try {
-    console.log('Buscando veículos para o usuário ID:', userId)
-    
     // Buscar todos os veículos do usuário
     const sql = 'SELECT * FROM vehicles WHERE owner_id = ? ORDER BY _id DESC'
     const results = await query(sql, [userId])
-    console.log('Veículos encontrados:', (results as any[]).length)
     
     return results as any[]
   } catch (error) {
@@ -20,7 +17,6 @@ export async function getVehiclesForSale(): Promise<any[]> {
   try {
     // Por enquanto, retorna array vazio até criarmos sistema de marketplace
     // Quando um veículo for colocado à venda, vamos adicioná-lo a uma tabela separada
-    console.log('Buscando veículos à venda...')
     
     // TODO: Criar tabela vehicle_listings com:
     // - vehicle_id (referência para vehicles._id)
@@ -41,8 +37,6 @@ export async function listVehicleForSale(
   userId: number
 ): Promise<{ success: boolean; message: string }> {
   try {
-    console.log('Tentando listar veículo para venda:', { vehicleId, price, userId })
-    
     // TODO: Implementar quando criarmos a tabela vehicle_listings
     // Por agora, vamos apenas simular sucesso
     

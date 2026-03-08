@@ -3,25 +3,14 @@ import { Vehicle } from '@/types/database'
 
 export async function getUserVehicles(userId: number): Promise<Vehicle[]> {
   try {
-    console.log('Buscando veículos para o usuário ID:', userId)
-    
-    // Verificar estrutura da tabela primeiro
-    const structure = await query('DESCRIBE vehicles') as any[]
-    console.log('Estrutura da tabela vehicles:', structure.map(col => col.Field))
-    
     // Buscar veículos do usuário usando owner_id (baseado na imagem)
     const sql = 'SELECT * FROM vehicles WHERE owner_id = ? ORDER BY id DESC'
     const results = await query(sql, [userId]) as Vehicle[]
-    console.log('Resultados com owner_id:', results.length, 'veículos')
-    console.log('Veículos encontrados:', results)
     
     // Se não encontrar com owner_id, tentar com outros nomes possíveis
     if (results.length === 0) {
-      console.log('Tentando outros nomes de coluna...')
-      
       const sql2 = 'SELECT * FROM vehicles WHERE user_id = ? ORDER BY id DESC'
       const results2 = await query(sql2, [userId]) as Vehicle[]
-      console.log('Resultados com user_id:', results2.length, 'veículos')
       
       if (results2.length > 0) {
         return results2
