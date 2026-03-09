@@ -59,8 +59,18 @@ export default function MarketplacePage() {
       <div className="absolute top-20 left-0 right-0 h-80 bg-gradient-to-b from-red-900/20  to-black -z-10" />
       <Header />
       <div className="max-w-7xl z-10 mx-auto px-6 py-12 pt-32 min-h-[calc(100vh-200px)]">
+        <div className="flex justify-between items-center mb-8">
+          <div></div>
+          {user && (
+            <div className="bg-black/60 border border-green-500/30 rounded-lg px-4 py-2">
+              <span className="text-green-400 font-bold text-lg">
+                💵 Saldo: ${user.money.toLocaleString()}
+              </span>
+            </div>
+          )}
+        </div>
         
-        <h1 className="text-4xl lg:text-5xl pt-10 font-bold text-white mb-15 text-center">
+        <h1 className="text-4xl lg:text-5xl font-bold text-white mb-15 text-center">
           Marketplace de Veículos
         </h1>
         
