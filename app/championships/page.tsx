@@ -1,10 +1,9 @@
 'use client'
 
-import { tournaments, Tournament } from "../../lib/tournaments";
+import { tournaments } from "../../lib/tournaments";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function ChampionshipsPage() {
   return (

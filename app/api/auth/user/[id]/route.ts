@@ -4,7 +4,7 @@ import { requireAuth } from '@/lib/auth'
 
 async function getUserByIdHandler(
   request: NextRequest, 
-  authContext: { user: { id: number; username: string; email: string } },
+  authContext: { user: { id: number; username: string } },
   params: { id: string }
 ) {
   try {
@@ -38,7 +38,8 @@ async function getUserByIdHandler(
     const user = users[0]
 
     // Retornar dados do usuário (sem senha)
-    const { password, ...userWithoutPassword } = user
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...userWithoutPassword } = user
 
     return NextResponse.json({ 
       success: true, 

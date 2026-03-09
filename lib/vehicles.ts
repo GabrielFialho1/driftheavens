@@ -24,15 +24,15 @@ export async function getUserVehicles(userId: number): Promise<Vehicle[]> {
   }
 }
 
-export async function getVehiclesForSale(): Promise<Vehicle[]> {
+export async function getVehiclesForSale(): Promise<(Vehicle & { seller_name?: string })[]> {
   // Por enquanto, retorna todos os veículos até criarmos as colunas for_sale
   const sql = `
     SELECT v.*, u.username as seller_name 
     FROM vehicles v 
     LEFT JOIN users u ON v.owner_id = u._id 
-    ORDER BY v._id DESC
+    ORDER BY v.id DESC
   `
-  const results = await query(sql) as any[]
+  const results = await query(sql) as (Vehicle & { seller_name?: string })[]
   return results
 }
 
@@ -46,8 +46,8 @@ export async function listVehicleForSale(
     SET for_sale = 1, price = ?, listed_at = NOW() 
     WHERE id = ? AND owner_id = ?
   `
-  const result = await query(sql, [price, vehicleId, userId])
-  return (result as any).affectedRows > 0
+  const result = await query(sql, [price, vehicleId, userId]) as { affectedRows: number }
+  return result.affectedRows > 0
 }
 
 export async function purchaseVehicle(
@@ -61,16 +61,16 @@ export async function purchaseVehicle(
     await connection.beginTransaction()
     
     // Get vehicle and seller info
-    const [vehicleResult] = await connection.execute(
+    const vehicleResult = await connection.execute(
       'SELECT * FROM vehicles WHERE id = ? AND for_sale = 1',
       [vehicleId]
-    ) as any[]
+    ) as [Vehicle[], unknown]
     
-    if (!vehicleResult.length) {
+    if (!vehicleResult[0] || vehicleResult[0].length === 0) {
       throw new Error('Veículo não encontrado ou não está à venda')
     }
     
-    const vehicle = vehicleResult[0]
+    const vehicle = vehicleResult[0][0]
     const sellerId = vehicle.owner_id
     
     if (sellerId === buyerId) {
@@ -78,12 +78,12 @@ export async function purchaseVehicle(
     }
     
     // Check buyer has enough money
-    const [buyerResult] = await connection.execute(
+    const buyerResult = await connection.execute(
       'SELECT money FROM users WHERE _id = ?',
       [buyerId]
-    ) as any[]
+    ) as [{ money: number }[], unknown]
     
-    if (!buyerResult.length || buyerResult[0].money < price) {
+    if (!buyerResult[0] || buyerResult[0].length === 0 || buyerResult[0][0].money < price) {
       throw new Error('Saldo insuficiente')
     }
     
@@ -122,6 +122,18 @@ export async function removeVehicleFromSale(vehicleId: number, userId: number): 
     SET for_sale = 0, price = NULL, listed_at = NULL 
     WHERE id = ? AND owner_id = ?
   `
-  const result = await query(sql, [vehicleId, userId])
-  return (result as any).affectedRows > 0
+  const result = await query(sql, [vehicleId, userId]) as { affectedRows: number }
+  return result.affectedRows > 0
+}
+
+export async function updateVehicleOwner(vehicleId: number, newOwnerId: number): Promise<{ success: boolean; message: string }> {
+  try {
+    const result = await query(
+      'UPDATE vehicles SET owner_id = ? WHERE id = ?',
+      [newOwnerId, vehicleId]
+    ) as { affectedRows: number }
+    return { success: result.affectedRows > 0, message: 'Proprietário do veículo atualizado com sucesso!' }
+  } catch (error) {
+    return { success: false, message: (error as Error).message }
+  }
 }

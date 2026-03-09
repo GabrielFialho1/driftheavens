@@ -37,6 +37,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
         setError(data.message)
       }
     } catch (error) {
+      console.error('Login error:', error)
       setError('Erro ao conectar com o servidor')
     } finally {
       setLoading(false)

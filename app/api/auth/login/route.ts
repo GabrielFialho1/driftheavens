@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { query } from '@/lib/database'
 import { generateToken } from '@/lib/auth'
+import { User } from '@/types/database'
 import crypto from 'crypto'
 
 // Função para verificar senha (assumindo que usa SHA256 como no exemplo)
@@ -21,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Buscar usuário no banco
-    const users = await query('SELECT * FROM users WHERE username = ?', [username]) as any[]
+    const users = await query('SELECT * FROM users WHERE username = ?', [username]) as User[]
     
     if (users.length === 0) {
       return NextResponse.json({ 
@@ -52,7 +53,8 @@ export async function POST(request: NextRequest) {
     })
 
     // Retornar dados do usuário (sem senha) e token
-    const { password: _, ...userWithoutPassword } = user
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _userPassword, ...userWithoutPassword } = user
 
     return NextResponse.json({ 
       success: true, 

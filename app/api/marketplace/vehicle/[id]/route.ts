@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const listing = await query(
       'SELECT id, price, name FROM marketplace_listings WHERE vehicle_id = ? AND seller_id = ? AND status = "active"',
       [vehicleId, auth.user.id]
-    ) as any[]
+    ) as { id: number; price: number; name: string }[]
 
     const isListed = listing && listing.length > 0
     
@@ -46,7 +46,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     const result = await query(
       'UPDATE marketplace_listings SET status = "cancelled" WHERE vehicle_id = ? AND seller_id = ? AND status = "active"',
       [vehicleId, auth.user.id]
-    ) as any
+    ) as { affectedRows: number }
 
     if (result.affectedRows > 0) {
       return NextResponse.json({ message: 'Veículo removido do marketplace com sucesso!' })

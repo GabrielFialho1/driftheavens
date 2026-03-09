@@ -113,6 +113,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
         setError(data.message)
       }
     } catch (error) {
+      console.error('Login error:', error)
       setError('Erro ao conectar com o servidor')
     } finally {
       setLoading(false)

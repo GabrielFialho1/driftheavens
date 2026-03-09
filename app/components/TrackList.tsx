@@ -1,4 +1,4 @@
-'use client'
+import Image from "next/image";
 
 import { useState, useEffect } from 'react'
 import { Track } from "../../lib/tracks"
@@ -56,7 +56,7 @@ export function TrackList({ tracks }: TrackListProps) {
       <div className="flex gap-8">
         {/* Lista de pistas - Lado esquerdo */}
         <div className="flex-1 max-w-md">
-          <div className="h-[420px] overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+          <div className="h-105 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
             {tracks.map((track) => (
               <div
                 key={track.id}
@@ -96,10 +96,11 @@ export function TrackList({ tracks }: TrackListProps) {
         <div className="flex-1">
           <div className="bg-zinc-900/50 rounded-lg border border-white/50 overflow-hidden">
             <div className="aspect-video relative">
-              <img
+              <Image
                 src={selectedTrack.image}
                 alt={selectedTrack.name}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement
                   target.src = '/img/bg1.jpg' // Imagem fallback
@@ -107,7 +108,7 @@ export function TrackList({ tracks }: TrackListProps) {
               />
               
               {/* Overlay com informações */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6">
                 <h3 className="text-xl font-bold text-white mb-2">{selectedTrack.name}</h3>
                 <p className="text-gray-300 text-sm mb-3">{selectedTrack.description}</p>
                 

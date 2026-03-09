@@ -1,28 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { Vehicle } from '@/types/database'
 
 interface VehicleWithSeller extends Vehicle {
   seller_name?: string
   price?: number
-}
-
-interface MarketplaceListing {
-  id: number
-  vehicle_id: number
-  seller_id: number
-  name: string
-  price: number
-  description: string
-  images: string[]
-  listed_at: string
-  status: string
-  model: number
-  mileage: number
-  stickers: string | object
-  seller_name: string
 }
 
 export function useMarketplace() {
@@ -33,14 +17,7 @@ export function useMarketplace() {
   const [error, setError] = useState('')
   const [listedVehicles, setListedVehicles] = useState<Set<number>>(new Set())
 
-  useEffect(() => {
-    if (user) {
-      fetchMyVehicles()
-    }
-    fetchMarketplaceVehicles()
-  }, [user])
-
-  const fetchMyVehicles = async () => {
+  const fetchMyVehicles = useCallback(async () => {
     try {
       const token = localStorage.getItem('token')
       
@@ -59,7 +36,14 @@ export function useMarketplace() {
     } catch (err) {
       console.error('Error fetching my vehicles:', err)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    if (user) {
+      fetchMyVehicles()
+    }
+    fetchMarketplaceVehicles()
+  }, [user, fetchMyVehicles])
 
   const checkListedVehicles = async (vehicles: Vehicle[]) => {
     try {
@@ -155,6 +139,7 @@ export function useMarketplace() {
         setError(result.error || 'Erro ao remover veículo do marketplace')
       }
     } catch (err) {
+      console.error('Error removing vehicle from marketplace:', err)
       setError('Erro ao remover veículo do marketplace')
     }
   }
@@ -181,6 +166,7 @@ export function useMarketplace() {
         setError(data.error || 'Erro ao comprar veículo')
       }
     } catch (err) {
+      console.error('Error purchasing vehicle:', err)
       setError('Erro ao comprar veículo')
     }
   }

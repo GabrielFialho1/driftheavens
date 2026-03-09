@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     )
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { message: 'Erro interno do servidor' },
       { status: 500 }
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
       total: filteredRegistrations.length
     })
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { message: 'Erro interno do servidor' },
       { status: 500 }

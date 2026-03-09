@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { query } from '@/lib/database'
+import { User } from '@/types/database'
 import crypto from 'crypto'
 
 function hashPassword(password: string): string {
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar se usuário já existe
-    const existingUsers = await query('SELECT username FROM users WHERE username = ?', [username]) as any[]
+    const existingUsers = await query('SELECT username FROM users WHERE username = ?', [username]) as Pick<User, 'username'>[]
     
     if (existingUsers.length > 0) {
       return NextResponse.json({ 
@@ -40,14 +41,15 @@ export async function POST(request: NextRequest) {
     const result = await query(
       'INSERT INTO users (username, password, money, playtime, skin, xp, avatar) VALUES (?, ?, 1000, 0, 1, 0, 1)',
       [username, hashedPassword]
-    ) as any
+    ) as { insertId: number }
 
     // Buscar usuário criado
-    const newUsers = await query('SELECT * FROM users WHERE _id = ?', [result.insertId]) as any[]
+    const newUsers = await query('SELECT * FROM users WHERE _id = ?', [result.insertId]) as User[]
     const newUser = newUsers[0]
 
     // Retornar dados do usuário (sem senha)
-    const { password: _, ...userWithoutPassword } = newUser
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...userWithoutPassword } = newUser
 
     return NextResponse.json({ 
       success: true, 

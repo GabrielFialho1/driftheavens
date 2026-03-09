@@ -36,7 +36,7 @@ export default function ProfilePage() {
     }
 
     updateUserData()
-  }, [user?._id])
+  }, [user?._id, user])
 
   if (!user) {
     return (
@@ -78,7 +78,7 @@ export default function ProfilePage() {
                 <div className="space-y-6">
                   <div className="flex items-center gap-4 mb-8">
                     <h1 className="text-3xl font-bold text-red-500">Assinaturas</h1>
-                    <div className="h-px flex-1 bg-gradient-to-r from-red-500/50 to-transparent"></div>
+                    <div className="h-px flex-1 bg-linear-to-r from-red-500/50 to-transparent"></div>
                   </div>
                   <div className="text-center py-12">
                     <p className="text-gray-400 mb-6">Nenhuma assinatura ativa no momento.</p>

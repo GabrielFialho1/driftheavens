@@ -25,7 +25,7 @@ export async function createMarketplaceListing(
     const vehicleCheckResult = await query(
       'SELECT _id FROM vehicles WHERE _id = ? AND owner_id = ?',
       [vehicleId, sellerId]
-    ) as any[]
+    ) as { _id: number }[]
 
     // Verificação mais robusta
     if (!vehicleCheckResult || vehicleCheckResult.length === 0) {
@@ -36,19 +36,17 @@ export async function createMarketplaceListing(
     const existingListing = await query(
       'SELECT id FROM marketplace_listings WHERE vehicle_id = ? AND status = "active"',
       [vehicleId]
-    ) as any[]
+    ) as { id: number }[]
 
     if (existingListing && existingListing.length > 0) {
       return { success: false, message: 'Este veículo já está à venda' }
     }
 
     // Inserir novo anúncio
-    const imagesJson = JSON.stringify(images)
     const result = await query(
-      `INSERT INTO marketplace_listings (vehicle_id, seller_id, name, price, description, images, listed_at, status) 
-       VALUES (?, ?, ?, ?, ?, ?, NOW(), 'active')`,
-      [vehicleId, sellerId, name, price, description, imagesJson]
-    ) as any
+      'INSERT INTO marketplace_listings (vehicle_id, seller_id, name, price, description, images, listed_at, status) VALUES (?, ?, ?, ?, ?, ?, NOW(), "active")',
+      [vehicleId, sellerId, name, price, description, JSON.stringify(images)]
+    ) as { insertId: number; affectedRows: number }
 
     if (result.affectedRows > 0) {
       return { success: true, message: 'Veículo colocado à venda com sucesso!' }
@@ -62,7 +60,7 @@ export async function createMarketplaceListing(
   }
 }
 
-export async function getMarketplaceListings(): Promise<any[]> {
+export async function getMarketplaceListings(): Promise<(MarketplaceListing & { model: string; mileage: number; seller_name: string })[]> {
   try {
     const sql = `
       SELECT 
@@ -72,16 +70,16 @@ export async function getMarketplaceListings(): Promise<any[]> {
         v.stickers,
         u.username as seller_name
       FROM marketplace_listings ml
-      LEFT JOIN vehicles v ON ml.vehicle_id = v._id
-      LEFT JOIN users u ON ml.seller_id = u._id
+      JOIN vehicles v ON ml.vehicle_id = v._id
+      JOIN users u ON ml.seller_id = u._id
       WHERE ml.status = 'active'
       ORDER BY ml.listed_at DESC
     `
     
-    const results = await query(sql) as any[]
+    const listings = await query(sql) as (MarketplaceListing & { model: string; mileage: number; seller_name: string })[]
     
     // Parse images JSON
-    return results.map(listing => ({
+    return listings.map(listing => ({
       ...listing,
       images: JSON.parse(listing.images || '[]')
     }))
@@ -95,72 +93,62 @@ export async function purchaseMarketplaceListing(
   listingId: number,
   buyerId: number
 ): Promise<{ success: boolean; message: string }> {
-  const connection = await (await import('./database')).getConnection()
-  
   try {
-    await connection.beginTransaction()
-    
     // Get listing details
-    const [listingResult] = await connection.execute(
+    const listing = await query(
       'SELECT * FROM marketplace_listings WHERE id = ? AND status = "active"',
       [listingId]
-    ) as any[]
+    ) as MarketplaceListing[]
     
-    if (!listingResult.length) {
+    if (!listing.length) {
       throw new Error('Anúncio não encontrado ou não está mais disponível')
     }
     
-    const listing = listingResult[0]
-    const sellerId = listing.seller_id
-    const price = listing.price
-    const vehicleId = listing.vehicle_id
+    const sellerId = listing[0].seller_id
+    const price = listing[0].price
+    const vehicleId = listing[0].vehicle_id
     
     if (sellerId === buyerId) {
       throw new Error('Você não pode comprar seu próprio veículo')
     }
     
     // Check buyer has enough money
-    const [buyerResult] = await connection.execute(
+    const buyerResult = await query(
       'SELECT money FROM users WHERE _id = ?',
       [buyerId]
-    ) as any[]
+    ) as { money: number }[]
     
-    if (!buyerResult.length || buyerResult[0].money < price) {
+    if (!buyerResult || buyerResult.length === 0 || buyerResult[0].money < price) {
       throw new Error('Saldo insuficiente')
     }
     
     // Transfer money
-    await connection.execute(
+    await query(
       'UPDATE users SET money = money - ? WHERE _id = ?',
       [price, buyerId]
     )
     
-    await connection.execute(
+    await query(
       'UPDATE users SET money = money + ? WHERE _id = ?',
       [price, sellerId]
     )
     
     // Transfer vehicle ownership
-    await connection.execute(
+    await query(
       'UPDATE vehicles SET owner_id = ? WHERE _id = ?',
       [buyerId, vehicleId]
     )
     
     // Update listing status
-    await connection.execute(
+    await query(
       'UPDATE marketplace_listings SET status = "sold" WHERE id = ?',
       [listingId]
     )
     
-    await connection.commit()
-    
     return { success: true, message: 'Veículo comprado com sucesso!' }
     
   } catch (error) {
-    await connection.rollback()
     return { success: false, message: (error as Error).message }
-  } finally {
-    connection.release()
   }
 }
 
@@ -172,7 +160,7 @@ export async function removeMarketplaceListing(
     const result = await query(
       'UPDATE marketplace_listings SET status = "cancelled" WHERE id = ? AND seller_id = ? AND status = "active"',
       [listingId, sellerId]
-    ) as any
+    ) as { affectedRows: number }
     
     if (result.affectedRows > 0) {
       return { success: true, message: 'Anúncio removido com sucesso!' }

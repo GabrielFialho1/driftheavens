@@ -86,6 +86,7 @@ export function ListVehicleModal({ isOpen, onClose, vehicle, onListVehicle }: Li
       setImages([])
       onClose()
     } catch (err) {
+      console.error('Error listing vehicle:', err)
       setError('Erro ao colocar veículo à venda')
     } finally {
       setLoading(false)
