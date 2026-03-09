@@ -1,19 +1,20 @@
 import { query } from './database'
+import { Vehicle } from '@/types/database'
 
-export async function getUserVehicles(userId: number): Promise<any[]> {
+export async function getUserVehicles(userId: number): Promise<Vehicle[]> {
   try {
     // Buscar todos os veículos do usuário
     const sql = 'SELECT * FROM vehicles WHERE owner_id = ? ORDER BY _id DESC'
     const results = await query(sql, [userId])
     
-    return results as any[]
+    return results as Vehicle[]
   } catch (error) {
     console.error('Erro em getUserVehicles:', error)
     return []
   }
 }
 
-export async function getVehiclesForSale(): Promise<any[]> {
+export async function getVehiclesForSale(): Promise<Vehicle[]> {
   try {
     // Por enquanto, retorna array vazio até criarmos sistema de marketplace
     // Quando um veículo for colocado à venda, vamos adicioná-lo a uma tabela separada
@@ -32,9 +33,9 @@ export async function getVehiclesForSale(): Promise<any[]> {
 }
 
 export async function listVehicleForSale(
-  vehicleId: number, 
-  price: number, 
-  userId: number
+  _vehicleId: number, 
+  _price: number, 
+  _userId: number
 ): Promise<{ success: boolean; message: string }> {
   try {
     // TODO: Implementar quando criarmos a tabela vehicle_listings
@@ -51,9 +52,9 @@ export async function listVehicleForSale(
 }
 
 export async function purchaseVehicle(
-  vehicleId: number, 
-  buyerId: number, 
-  price: number
+  _vehicleId: number, 
+  _buyerId: number, 
+  _price: number
 ): Promise<{ success: boolean; message: string }> {
   try {
     // TODO: Implementar quando tivermos marketplace funcional
@@ -67,7 +68,7 @@ export async function purchaseVehicle(
   }
 }
 
-export async function removeVehicleFromSale(vehicleId: number, userId: number): Promise<boolean> {
+export async function removeVehicleFromSale(_vehicleId: number, _userId: number): Promise<boolean> {
   try {
     // TODO: Implementar quando criarmos a tabela vehicle_listings
     return true

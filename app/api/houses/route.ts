@@ -17,7 +17,7 @@ export async function GET() {
       table: 'houses',
       structure,
       sampleData,
-      totalHouses: (count as any[])[0]?.total || 0
+      totalHouses: (count as { total: number }[])[0]?.total || 0
     })
   } catch (error) {
     console.error('Error fetching houses:', error)
