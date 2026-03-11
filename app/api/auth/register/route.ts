@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { query } from '@/lib/database'
 import { User } from '@/types/database'
+import { syncAutoIncrement } from '@/lib/autoIncrement'
 import crypto from 'crypto'
 
 function hashPassword(password: string): string {
@@ -38,6 +39,10 @@ export async function POST(request: NextRequest) {
 
     // Criar novo usuário
     const hashedPassword = hashPassword(password)
+    
+    // Sincronizar AUTO_INCREMENT antes de criar usuário
+    await syncAutoIncrement()
+    
     const result = await query(
       'INSERT INTO users (username, password, money, playtime, skin, xp, avatar) VALUES (?, ?, 1000, 0, 1, 0, 1)',
       [username, hashedPassword]

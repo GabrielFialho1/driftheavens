@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Header } from '@/app/components/Header'
 import { Footer } from '@/app/components/Footer'
 import { useAuth } from '@/contexts/AuthContext'
+import { MessageCircle, Ticket, HelpCircle, User, Mail, Tag, AlertCircle, CheckCircle, X, Phone, Zap } from 'lucide-react'
 
 export default function SupportPage() {
   const { user } = useAuth()
@@ -21,15 +22,15 @@ export default function SupportPage() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
   const tabs = [
-    { id: 'discord', title: 'Discord', icon: '💬', description: 'Suporte rápido via comunidade' },
-    { id: 'ticket', title: 'Abrir Ticket', icon: '🎫', description: 'Suporte formal e rastreado' },
-    { id: 'faq', title: 'FAQ', icon: '❓', description: 'Perguntas frequentes' }
+    { id: 'discord', title: 'Discord', icon: <MessageCircle className="w-6 h-6 mx-auto" />, description: 'Suporte rápido via comunidade' },
+    { id: 'ticket', title: 'Abrir Ticket', icon: <Ticket className="w-6 h-6 mx-auto" />, description: 'Suporte formal e rastreado' },
+    { id: 'faq', title: 'FAQ', icon: <HelpCircle className="w-6 h-6 mx-auto" />, description: 'Perguntas frequentes' }
   ]
 
   const faqCategories = [
     {
       title: 'Marketplace',
-      icon: '🏪',
+      icon: <Tag className="w-5 h-5 mx-auto" />,
       questions: [
         { q: 'Como comprar um veículo?', a: 'Acesse o marketplace, escolha o veículo e clique em Comprar. O dinheiro será debitado automaticamente.' },
         { q: 'Posso vender meu veículo?', a: 'Sim! Na aba "Meus Veículos", clique em "Listar" e defina o preço.' },
@@ -38,7 +39,7 @@ export default function SupportPage() {
     },
     {
       title: 'Torneios',
-      icon: '🏆',
+      icon: <Ticket className="w-5 h-5 mx-auto" />,
       questions: [
         { q: 'Como participar de torneios?', a: 'Acesse a seção Torneios, verifique os requisitos e clique em "Participar".' },
         { q: 'Quais são os prêmios?', a: 'Os prêmios variam conforme o torneio. Geralmente incluem dinheiro, veículos exclusivos e títulos.' },
@@ -47,7 +48,7 @@ export default function SupportPage() {
     },
     {
       title: 'Conta',
-      icon: '👤',
+      icon: <User className="w-5 h-5 mx-auto" />,
       questions: [
         { q: 'Como resetar minha senha?', a: 'Clique em "Esqueci minha senha" na tela de login e siga as instruções.' },
         { q: 'Como alterar meu nome?', a: 'Vá para Perfil > Configurações > Editar Perfil e atualize seu nome.' },
@@ -56,7 +57,7 @@ export default function SupportPage() {
     },
     {
       title: 'Veículos',
-      icon: '🚗',
+      icon: <AlertCircle className="w-5 h-5 mx-auto" />,
       questions: [
         { q: 'Como personalizar meu carro?', a: 'Vá para Garagem > Personalizar e escolha as modificações disponíveis.' },
         { q: 'Posso vender meu carro?', a: 'Sim! Você pode vender na Garagem ou no Marketplace.' },
@@ -219,9 +220,9 @@ export default function SupportPage() {
       case 'discord':
         return (
           <div className="space-y-8">
-            <div className="bg-black/40 border border-green-500/30 rounded-2xl p-8">
+            <div className="bg-black/40 border border-red-500/30 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                <span className="text-3xl">💬</span>
+                <MessageCircle className="w-8 h-8 text-red-400 mx-auto" />
                 Suporte via Discord
               </h3>
               <p className="text-gray-300 mb-6">
@@ -229,9 +230,10 @@ export default function SupportPage() {
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-gray-800/30 rounded-lg p-6 border border-gray-700/50">
-                  <h4 className="text-green-400 font-semibold mb-4 flex items-center gap-2">
-                    📱 Como Acessar
+                <div className="bg-black/30 rounded-lg p-6 border border-red-500/20">
+                  <h4 className="text-red-400 font-semibold mb-4 flex items-center gap-2">
+                    <Phone className="w-4 h-4" />
+                    Como Acessar
                   </h4>
                   <ul className="space-y-2 text-gray-300">
                     <li>• Clique no botão abaixo</li>
@@ -241,9 +243,10 @@ export default function SupportPage() {
                   </ul>
                 </div>
                 
-                <div className="bg-gray-800/30 rounded-lg p-6 border border-gray-700/50">
-                  <h4 className="text-green-400 font-semibold mb-4 flex items-center gap-2">
-                    ⚡ Vantagens
+                <div className="bg-black/30 rounded-lg p-6 border border-red-500/20">
+                  <h4 className="text-red-400 font-semibold mb-4 flex items-center gap-2">
+                    <Zap className="w-4 h-4" />
+                    Vantagens
                   </h4>
                   <ul className="space-y-2 text-gray-300">
                     <li>• Resposta em minutos</li>
@@ -259,9 +262,9 @@ export default function SupportPage() {
                   href="https://discord.gg/diftheavens" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-green-500 text-white font-medium rounded-xl hover:bg-green-600 transition-all transform hover:scale-105 cursor-pointer"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-all transform hover:scale-105 cursor-pointer"
                 >
-                  <span className="text-2xl">💬</span>
+                  <MessageCircle className="w-8 h-8 mx-auto" />
                   Entrar no Discord
                 </a>
               </div>
@@ -273,9 +276,11 @@ export default function SupportPage() {
         if (!user) {
           return (
             <div className="space-y-8">
-              <div className="bg-black/40 border border-blue-500/30 rounded-2xl p-8">
-                <div className="text-center py-12">
-                  <div className="text-6xl mb-6">🔒</div>
+              <div className="bg-black/40 border border-red-500/30 rounded-2xl p-8">
+                <div className="mb-6">
+                  <div className="mb-6">
+                    <AlertCircle className="w-16 h-16 text-red-400 mx-auto" />
+                  </div>
                   <h3 className="text-2xl font-bold text-white mb-4">
                     Login Necessário
                   </h3>
@@ -285,7 +290,7 @@ export default function SupportPage() {
                   <div className="flex justify-center gap-4">
                     <a 
                       href="/login"
-                      className="px-8 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors cursor-pointer"
+                      className="px-8 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
                     >
                       Fazer Login
                     </a>
@@ -304,9 +309,9 @@ export default function SupportPage() {
 
         return (
           <div className="space-y-8">
-            <div className="bg-black/40 border border-blue-500/30 rounded-2xl p-8">
+            <div className="bg-black/40 border border-red-500/30 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                <span className="text-3xl">🎫</span>
+                <Ticket className="w-8 h-8 text-red-400 mx-auto" />
                 Abrir Novo Ticket
               </h3>
               <p className="text-gray-300 mb-6">
@@ -316,26 +321,31 @@ export default function SupportPage() {
               
               {submitStatus === 'success' && (
                 <div className="bg-green-500/20 border border-green-500 text-green-400 px-4 py-3 rounded-lg mb-6">
-                  ✅ Ticket enviado com sucesso! Responderemos em até 24 horas.
+                  <CheckCircle className="w-4 h-4 inline mr-2" />
+                  Ticket enviado com sucesso! Responderemos em até 24 horas.
                 </div>
               )}
               
               {submitStatus === 'error' && (
                 <div className="bg-red-500/20 border border-red-500 text-red-400 px-4 py-3 rounded-lg mb-6">
-                  ❌ Erro ao enviar ticket. Verifique a configuração do webhook ou tente novamente.
+                  <X className="w-4 h-4 inline mr-2" />
+                  Erro ao enviar ticket. Verifique a configuração do webhook ou tente novamente.
                 </div>
               )}
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-gray-300 mb-2">Nome *</label>
+                    <label className="text-gray-300 mb-2 flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      Nome *
+                    </label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/40 border border-gray-700 rounded-lg text-white focus:border-red-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-black/40 border border-red-500/30 rounded-lg text-white focus:border-red-500 focus:outline-none"
                       required
                       disabled={!!user}
                     />
@@ -345,13 +355,16 @@ export default function SupportPage() {
                   </div>
                   
                   <div>
-                    <label className="block text-gray-300 mb-2">Email *</label>
+                    <label className="text-gray-300 mb-2 flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
+                      Email *
+                    </label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/40 border border-gray-700 rounded-lg text-white focus:border-red-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-black/40 border border-red-500/30 rounded-lg text-white focus:border-red-500 focus:outline-none"
                       required
                       disabled={!!user && !!(user as { email?: string }).email}
                     />
@@ -368,7 +381,7 @@ export default function SupportPage() {
                       value={formData.discordId}
                       onChange={handleInputChange}
                       placeholder="Ex: 123456789012345678"
-                      className="w-full px-4 py-3 bg-black/40 border border-gray-700 rounded-lg text-white focus:border-red-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-black/40 border border-red-500/30 rounded-lg text-white focus:border-red-500 focus:outline-none"
                       disabled={!!user && !!(user as { discordId?: string }).discordId}
                     />
                     {user && (user as { discordId?: string }).discordId ? (
@@ -379,39 +392,39 @@ export default function SupportPage() {
                   </div>
                   
                   <div>
-                    <label className="block text-gray-300 mb-2">Categoria *</label>
-                    <select
-                      name="category"
-                      value={formData.category}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/40 border border-gray-700 rounded-lg text-white focus:border-red-500 focus:outline-none"
-                      required
-                    >
-                      <option value="">Selecione...</option>
-                      <option value="marketplace">🏪 Marketplace</option>
-                      <option value="torneios">🏆 Torneios</option>
-                      <option value="conta">👤 Problemas com Conta</option>
-                      <option value="veiculos">🚗 Veículos</option>
-                      <option value="bug">🐛 Reportar Bug</option>
-                      <option value="sugestao">💡 Sugestão</option>
-                      <option value="outro">📦 Outro</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-gray-300 mb-2">Prioridade *</label>
-                    <select
-                      name="priority"
-                      value={formData.priority}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/40 border border-gray-700 rounded-lg text-white focus:border-red-500 focus:outline-none"
-                    >
-                      <option value="baixa">🟢 Baixa</option>
-                      <option value="normal">🟡 Normal</option>
-                      <option value="alta">🟠 Alta</option>
-                      <option value="urgente">🔴 Urgente</option>
-                    </select>
-                  </div>
+                  <label className="text-gray-300 mb-2">Categoria *</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-black/40 border border-red-500/30 rounded-lg text-white focus:border-red-500 focus:outline-none"
+                    required
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="marketplace">🏪 Marketplace</option>
+                    <option value="torneios">🏆 Torneios</option>
+                    <option value="conta">👤 Problemas com Conta</option>
+                    <option value="veiculos">🚗 Veículos</option>
+                    <option value="bug">🐛 Reportar Bug</option>
+                    <option value="sugestao">💡 Sugestão</option>
+                    <option value="outro">📦 Outro</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="text-gray-300 mb-2">Prioridade *</label>
+                  <select
+                    name="priority"
+                    value={formData.priority}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-black/40 border border-red-500/30 rounded-lg text-white focus:border-red-500 focus:outline-none"
+                  >
+                    <option value="baixa">🟢 Baixa</option>
+                    <option value="normal">🟡 Normal</option>
+                    <option value="alta">🟠 Alta</option>
+                    <option value="urgente">🔴 Urgente</option>
+                  </select>
+                </div>
                   
                   <div className="md:col-span-2">
                     <label className="block text-gray-300 mb-2">Assunto *</label>
@@ -420,7 +433,7 @@ export default function SupportPage() {
                       name="subject"
                       value={formData.subject}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-black/40 border border-gray-700 rounded-lg text-white focus:border-red-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-black/40 border border-red-500/30 rounded-lg text-white focus:border-red-500 focus:outline-none"
                       required
                     />
                   </div>
@@ -432,7 +445,7 @@ export default function SupportPage() {
                       value={formData.message}
                       onChange={handleInputChange}
                       rows={6}
-                      className="w-full px-4 py-3 bg-black/40 border border-gray-700 rounded-lg text-white focus:border-red-500 focus:outline-none resize-none"
+                      className="w-full px-4 py-3 bg-black/40 border border-red-500/30 rounded-lg text-white focus:border-red-500 focus:outline-none resize-none"
                       required
                     />
                   </div>
@@ -442,9 +455,10 @@ export default function SupportPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-8 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="px-8 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-2"
                   >
                     {isSubmitting ? 'Enviando...' : 'Enviar Ticket'}
+                    <Ticket className="w-4 h-4" />
                   </button>
                 </div>
               </form>
@@ -455,9 +469,9 @@ export default function SupportPage() {
       case 'faq':
         return (
           <div className="space-y-8">
-            <div className="bg-black/40 border border-yellow-500/30 rounded-2xl p-8">
+            <div className="bg-black/40 border border-red-500/30 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                <span className="text-3xl">❓</span>
+                <HelpCircle className="w-8 h-8 text-red-400 mx-auto" />
                 Perguntas Frequentes
               </h3>
               <p className="text-gray-300 mb-6">
@@ -466,23 +480,23 @@ export default function SupportPage() {
               
               <div className="space-y-6">
                 {faqCategories.map((category, index) => (
-                  <div key={index} className="bg-gray-800/30 rounded-lg border border-gray-700/50">
-                    <div className="bg-gray-800/30 px-6 py-4 border-b border-gray-700/50">
+                  <div key={index} className="bg-black/30 rounded-lg border border-red-500/20">
+                    <div className="bg-black/30 px-6 py-4 border-b border-red-500/20">
                       <h4 className="text-lg font-semibold text-white flex items-center gap-2">
                         <span className="text-xl">{category.icon}</span>
                         {category.title}
                       </h4>
                     </div>
                     
-                    <div className="divide-y divide-gray-700/50">
+                    <div className="divide-y divide-red-500/20">
                       {category.questions.map((faq, faqIndex) => (
                         <div key={faqIndex} className="px-6 py-4">
                           <div className="flex items-start gap-3">
-                            <div className="text-yellow-400 mt-1">Q:</div>
+                            <div className="text-red-400 mt-1">Q:</div>
                             <div className="flex-1">
                               <p className="text-white font-medium mb-2">{faq.q}</p>
                               <div className="flex items-start gap-3">
-                                <div className="text-green-400 mt-1">A:</div>
+                                <div className="text-red-400 mt-1">A:</div>
                                 <p className="text-gray-300">{faq.a}</p>
                               </div>
                             </div>
@@ -503,7 +517,7 @@ export default function SupportPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-black to-black">
+    <div className="min-h-screen bg-black">
       <Header />
       
       <div className="max-w-7xl mx-auto px-6 py-12 pt-32 min-h-[calc(100vh-200px)]">
@@ -529,7 +543,7 @@ export default function SupportPage() {
                   : 'bg-black/40 border-gray-700 text-gray-300 hover:border-red-500/60 hover:text-white'
               }`}
             >
-              <div className="text-3xl mb-3">{tab.icon}</div>
+              <div className="text-3xl mb-3 text-red-400">{tab.icon}</div>
               <h3 className="text-lg font-semibold mb-2">{tab.title}</h3>
               <p className="text-sm text-gray-400">{tab.description}</p>
             </button>

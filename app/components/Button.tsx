@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'outline' | 'secondary'
+  variant?: 'default' | 'outline' | 'secondary' | 'outline-transparent'
   size?: 'sm' | 'md' | 'lg'
   children: React.ReactNode
 }
@@ -10,7 +10,8 @@ export function Button({ variant = 'default', size = 'md', className, children, 
   const variants = {
     default: "bg-black border border-red-500 text-white hover:bg-red-500 shadow-lg hover:shadow-red-500/40",
     outline: "bg-white text-black hover:bg-zinc-100 shadow-lg hover:shadow-white/30",
-    secondary: "bg-gray-200 text-black hover:bg-gray-300"
+    secondary: "bg-gray-200 text-black hover:bg-gray-300",
+    'outline-transparent': "bg-transparent border-2 border-red-500 hover:bg-red-500/10 text-red-500"
   }
 
   const sizes = {

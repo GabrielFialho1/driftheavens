@@ -60,6 +60,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     addNotification({ title: 'Logout realizado com sucesso!', type: 'error' })
+    
+    // Pequeno delay e redirecionamento para página principal
+    setTimeout(() => {
+      window.location.href = '/'
+    }, 1500) // 1.5 segundos de delay
   }
 
   return (

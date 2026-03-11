@@ -52,10 +52,6 @@ export function ListVehicleModal({ isOpen, onClose, vehicle, onListVehicle }: Li
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    console.log('=== ListVehicleModal handleSubmit ===')
-    console.log('Vehicle:', vehicle)
-    console.log('Vehicle ID:', vehicle._id)
-    
     if (!name || !price || !description) {
       setError('Por favor, preencha todos os campos')
       return

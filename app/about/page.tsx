@@ -3,14 +3,15 @@
 import { useState } from 'react'
 import { Header } from '@/app/components/Header'
 import { Footer } from '@/app/components/Footer'
+import { Zap, Trophy, Users, Car, TrendingUp, MessageCircle, Phone, Bug, AlertTriangle } from 'lucide-react'
 
 export default function AboutPage() {
   const [activeSection, setActiveSection] = useState<string>('overview')
 
   const sections = [
-    { id: 'overview', title: 'Visão Geral', icon: '🏠' },
-    { id: 'features', title: 'Recursos', icon: '⚡' },
-    { id: 'contact', title: 'Contato', icon: '📧' }
+    { id: 'overview', title: 'Visão Geral', icon: <AlertTriangle className="w-5 h-5 mx-auto" /> },
+    { id: 'features', title: 'Recursos', icon: <Zap className="w-5 h-5 mx-auto" /> },
+    { id: 'contact', title: 'Contato', icon: <MessageCircle className="w-5 h-5 mx-auto" /> }
   ]
 
   const content = {
@@ -28,23 +29,22 @@ export default function AboutPage() {
       title: 'Nossos Recursos',
       description: 'Descubra tudo o que nossa plataforma oferece para sua experiência de drift.',
       details: [
-        '🏁 **Garagem Personalizada**: Gerencie sua coleção de veículos',
-        '💰 **Economia Virtual**: Compre, venda e negocie veículos',
-        '🏆 **Torneios**: Participe de competições e ganhe prêmios',
-        '📊 **Estatísticas**: Acompanhe seu progresso e rankings',
-        '🎨 **Personalização**: Customize seus veículos com stickers',
-        '🌐 **Comunidade**: Conecte-se com outros pilotos'
+        '<Car className="w-4 h-4 inline mr-2" /> **Garagem Personalizada**: Gerencie sua coleção de veículos',
+        '<TrendingUp className="w-4 h-4 inline mr-2" /> **Economia Virtual**: Compre, venda e negocie veículos',
+        '<Trophy className="w-4 h-4 inline mr-2" /> **Torneios**: Participe de competições e ganhe prêmios',
+        '<Target className="w-4 h-4 inline mr-2" /> **Estatísticas**: Acompanhe seu progresso e rankings',
+        '<Palette className="w-4 h-4 inline mr-2" /> **Personalização**: Customize seus veículos com stickers',
+        '<Users className="w-4 h-4 inline mr-2" /> **Comunidade**: Conecte-se com outros pilotos'
       ]
     },
     contact: {
       title: 'Entre em Contato',
       description: 'Precisa de ajuda ou tem sugestões? Estamos aqui para ajudar!',
       details: [
-        '📧 **Email**: support@driftheavens.com',
-        '💬 **Discord**: Junte-se à nossa comunidade',
-        '🐦 **Twitter**: Siga nossas novidades',
-        '📱 **WhatsApp**: Suporte rápido e direto',
-        '🐛 **Report Bugs**: Ajude-nos a melhorar'
+        '<Phone className="w-4 h-4 inline mr-2" /> **Email**: support@driftheavens.com',
+        '<MessageCircle className="w-4 h-4 inline mr-2" /> **Discord**: Junte-se à nossa comunidade',
+        '<Twitter className="w-4 h-4 inline mr-2" /> **Twitter**: Siga nossas novidades',
+        '<Bug className="w-4 h-4 inline mr-2" /> **Report Bugs**: Ajude-nos a melhorar'
       ]
     }
   }
@@ -58,11 +58,11 @@ export default function AboutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-black to-black">
+    <div className="min-h-screen bg-black main-page-scrollbar pt-20">
       <Header />
       
       <div className="max-w-7xl mx-auto px-6 py-12 pt-32 min-h-[calc(100vh-200px)]">
-        {/* Header */}
+        {/* Page Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl lg:text-6xl font-bold text-white mb-4">
             Sobre <span className="text-red-500">Drift Heavens</span>
@@ -118,10 +118,10 @@ export default function AboutPage() {
         {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {[
-            { label: 'Usuários Ativos', value: '10K+', icon: '👤' },
-            { label: 'Veículos', value: '500+', icon: '🚗' },
-            { label: 'Torneios', value: '50+', icon: '🏆' },
-            { label: 'Transações', value: '100K+', icon: '💰' }
+            { label: 'Usuários Ativos', value: '10K+', icon: <Users className="w-4 h-4 mx-auto" /> },
+            { label: 'Veículos', value: '500+', icon: <Car className="w-4 h-4 mx-auto" /> },
+            { label: 'Torneios', value: '50+', icon: <Trophy className="w-4 h-4 mx-auto" /> },
+            { label: 'Transações', value: '100K+', icon: <TrendingUp className="w-4 h-4 mx-auto" /> }
           ].map((stat, index) => (
             <div 
               key={index}

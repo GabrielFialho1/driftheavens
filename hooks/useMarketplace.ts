@@ -77,7 +77,7 @@ export function useMarketplace() {
       
       if (response.ok) {
         const data = await response.json()
-        setMarketplaceVehicles(data.listings)
+        setMarketplaceVehicles(data.listings || [])
       }
     } catch (err) {
       console.error('Error fetching marketplace vehicles:', err)

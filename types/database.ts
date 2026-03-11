@@ -39,3 +39,31 @@ export interface House {
   updated_at?: string
   // Adicionar campos conforme sua estrutura real
 }
+
+export interface Clan {
+  id: number
+  name: string
+  tag: string
+  description?: string
+  leader_id: number
+  created_at: string
+  updated_at: string
+  members_count: number
+  max_members: number
+  level: number
+  experience: number
+  is_active: boolean
+  logo?: string
+  leader?: User // Para JOIN com usuário
+}
+
+export interface ClanMember {
+  id: number
+  clan_id: number
+  user_id: number
+  role: 'leader' | 'officer' | 'member'
+  joined_at: string
+  contribution: number
+  user?: User // Para JOIN com usuário
+  clan?: Clan // Para JOIN com clan
+}

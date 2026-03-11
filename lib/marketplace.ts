@@ -64,10 +64,17 @@ export async function getMarketplaceListings(): Promise<(MarketplaceListing & { 
   try {
     const sql = `
       SELECT 
-        ml.*,
+        ml.id,
+        ml.vehicle_id,
+        ml.seller_id,
+        ml.name,
+        ml.price,
+        ml.description,
+        ml.images,
+        ml.listed_at,
+        ml.status,
         v.model,
         v.mileage,
-        v.stickers,
         u.username as seller_name
       FROM marketplace_listings ml
       JOIN vehicles v ON ml.vehicle_id = v._id
@@ -78,10 +85,13 @@ export async function getMarketplaceListings(): Promise<(MarketplaceListing & { 
     
     const listings = await query(sql) as (MarketplaceListing & { model: string; mileage: number; seller_name: string })[]
     
-    // Parse images JSON
+    // Parse images JSON e formatar stickers corretamente
     return listings.map(listing => ({
       ...listing,
-      images: JSON.parse(listing.images || '[]')
+      _id: listing.vehicle_id, // Adicionar _id para compatibilidade com Vehicle
+      images: JSON.parse(listing.images || '[]'),
+      stickers: '[]', // Formatar stickers como array vazio para marketplace
+      price: Number(listing.price) // Converter price para número
     }))
   } catch (error) {
     console.error('Error fetching marketplace listings:', error)

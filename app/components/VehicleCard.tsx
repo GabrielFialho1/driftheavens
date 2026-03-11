@@ -42,7 +42,7 @@ export function VehicleCard({
   }
 
   return (
-    <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 hover:border-red-500/50 transition-colors">
+    <div className="bg-black/40 backdrop-blur-md border border-red-500/30 rounded-lg p-6 hover:border-red-500/50 transition-colors">
       <div className="relative h-40 mb-4">
         <Image
           src={getCarImageByModelId(Number(vehicle.model))}
@@ -63,7 +63,7 @@ export function VehicleCard({
         )}
         <p><span className="text-gray-400">Quilometragem:</span> {vehicle.mileage} km</p>
         {isMarketplace && vehicle.price && (
-          <p><span className="text-gray-400">Preço:</span> <span className="text-green-400 font-bold">${vehicle.price}</span></p>
+          <p><span className="text-gray-400">Preço:</span> <span className="text-red-400 font-bold">${vehicle.price}</span></p>
         )}
       </div>
       
@@ -91,8 +91,9 @@ export function VehicleCard({
         <Button
           onClick={() => onListVehicle?.(vehicle)}
           className="w-full"
+          variant="outline-transparent"
         >
-          Colocar à Venda
+          Listar no Marketplace
         </Button>
       )}
     </div>

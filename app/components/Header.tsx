@@ -12,7 +12,8 @@ const navItems = [
   { id: 2, name: "About", label: "Sobre nós" },
   { id: 3, name: "Championships", label: "Campeonatos" },
   { id: 4, name: "Marketplace", label: "Marketplace de veículos" },
-  { id: 5, name: "Support", label: "Suporte e ajuda" },
+  { id: 5, name: "Clans", label: "Clans" },
+  { id: 6, name: "Support", label: "Suporte e ajuda" },
 ];
 
 export function Header() {

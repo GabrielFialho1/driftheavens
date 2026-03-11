@@ -119,3 +119,49 @@ body {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
 }
+
+/* Classes de cor para badges de clans */
+.badge-orange-fire {
+  background: #FF4500 !important;
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.4) !important;
+}
+
+.badge-pink-neon {
+  background: #FF0856 !important;
+  box-shadow: 0 0 20px rgba(255, 8, 86, 0.4) !important;
+}
+
+.badge-green-neon {
+  background: #39FF14 !important;
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.4) !important;
+}
+
+.badge-cyan-ice {
+  background: #00CED1 !important;
+  box-shadow: 0 0 20px rgba(0, 206, 209, 0.4) !important;
+}
+
+.badge-purple-shadow {
+  background: #4B0082 !important;
+  box-shadow: 0 0 20px rgba(75, 0, 130, 0.4) !important;
+}
+
+.badge-gray-dark {
+  background: #696969 !important;
+  box-shadow: 0 0 20px rgba(105, 105, 105, 0.4) !important;
+}
+
+.badge-gold {
+  background: #FFD700 !important;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4) !important;
+}
+
+.badge-red-dark {
+  background: #8B0000 !important;
+  box-shadow: 0 0 20px rgba(139, 0, 0, 0.4) !important;
+}
+
+.badge-default {
+  background: #dc2626 !important;
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.25) !important;
+}

@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
 import { checkPasswordStrength, validateUsername } from '@/lib/validation'
 import { LoadingSpinner, StatusBadge, Tooltip } from './Feedback'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface AuthModalProps {
   isOpen: boolean
@@ -13,7 +13,6 @@ interface AuthModalProps {
 
 export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalProps) {
   const { login } = useAuth()
-  const [mode, setMode] = useState<'login' | 'register'>(initialMode)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -23,6 +22,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
   const [passwordStrength, setPasswordStrength] = useState(checkPasswordStrength(''))
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [mode, setMode] = useState<'login' | 'register'>(initialMode)
 
   // Resetar campos quando mudar modo
   useEffect(() => {
@@ -104,6 +104,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
       const data = await response.json()
 
       if (data.success) {
+        // Implementar login real
         login(data.user, data.token)
         onClose()
         setUsername('')
@@ -190,14 +191,14 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
             <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
               Senha {mode === 'register' && <span className="text-red-400">*</span>}
             </label>
-            <div className="relative">
+            <div className="flex items-center">
               <input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-4 py-3 bg-black/50 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10 ${
+                className={`flex-1 px-4 py-3 bg-black/50 border rounded-l-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent ${
                   fieldErrors.password 
                     ? 'border-red-500 focus:ring-red-500' 
                     : 'border-red-500/30'
@@ -210,7 +211,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3.5 text-gray-400 hover:text-white transition-colors cursor-pointer"
+                  className="px-3 py-3 bg-black/50 border-r border-t border-b border-red-500/30 rounded-r-lg text-gray-400 hover:text-white transition-colors cursor-pointer"
                   aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
                 >
                   {showPassword ? (
@@ -267,14 +268,14 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
                 Confirmar Senha <span className="text-red-400">*</span>
               </label>
-              <div className="relative">
+              <div className="flex items-center">
                 <input
                   id="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className={`w-full px-4 py-3 bg-black/50 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10 ${
+                  className={`flex-1 px-4 py-3 bg-black/50 border rounded-l-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent ${
                     fieldErrors.confirmPassword 
                       ? 'border-red-500 focus:ring-red-500' 
                       : 'border-red-500/30'
@@ -286,7 +287,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-3.5 text-gray-400 hover:text-white transition-colors cursor-pointer"
+                  className="px-3 py-3 bg-black/50 border-r border-t border-b border-red-500/30 rounded-r-lg text-gray-400 hover:text-white transition-colors cursor-pointer"
                   aria-label={showConfirmPassword ? 'Ocultar senha' : 'Mostrar senha'}
                 >
                   {showConfirmPassword ? (
