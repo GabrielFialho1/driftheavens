@@ -1,3 +1,5 @@
+import React from 'react'
+
 interface ClanLeader {
   username: string
 }
@@ -17,16 +19,35 @@ interface ClanCardProps {
   showJoinButton?: boolean
 }
 
-function extractColorCode(text: string): { color: string; cleanText: string; hasColor: boolean } {
-  const hexMatch = text.match(/#([0-9A-Fa-f]{6})/gi)
-  if (hexMatch && hexMatch.length > 0) {
-    return { 
-      color: hexMatch[0], 
-      cleanText: text.replace(/#[0-9A-Fa-f]{6}/gi, '').trim(),
-      hasColor: true
+// Nova função que converte a string do banco em elementos HTML coloridos
+function parseColoredText(text: string) {
+  if (!text) return null;
+
+  // Divide a string mantendo os códigos hexadecimais no array
+  // Ex: "#FF0000Texto" vira ["", "#FF0000", "Texto"]
+  const parts = text.split(/(#[0-9A-Fa-f]{6})/g);
+  
+  // Cor padrão caso a string não comece com um código hexadecimal (text-gray-300)
+  let currentColor = '#d1d5db'; 
+
+  return parts.map((part, index) => {
+    // Se a parte atual for um código de cor, atualizamos a variável currentColor e não renderizamos nada
+    if (part.match(/^#[0-9A-Fa-f]{6}$/i)) {
+      currentColor = part;
+      return null;
     }
-  }
-  return { color: '#dc2626', cleanText: text, hasColor: false }
+    
+    // Se for texto comum, renderizamos dentro de um span com a cor atual
+    if (part) {
+      return (
+        <span key={index} style={{ color: currentColor }}>
+          {part}
+        </span>
+      );
+    }
+    
+    return null;
+  });
 }
 
 export default function ClanCard({ 
@@ -60,8 +81,8 @@ export default function ClanCard({
 
       <div className="flex-1 mb-4">
         {clan.chat_text && (
-          <p className="text-gray-300 line-clamp-2">
-            {clan.chat_text}
+          <p className="line-clamp-2 break-all">
+            {parseColoredText(clan.chat_text)}
           </p>
         )}
       </div>
